@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class MergeSort implements SortingAlgorithm {
     @Override
     public void sort(int[] a) {
@@ -12,21 +14,11 @@ public class MergeSort implements SortingAlgorithm {
     }
 
     public int[] leftArr(int[] a) {
-        int size = a.length / 2;
-        int[] left = new int[size];
-        for (int i = 0; i < size; i++) {
-            left[i] = a[i];
-        }
-        return left;
+        return Arrays.copyOfRange(a, 0, a.length/2);
     }
 
     public int[] rightArr(int[] a) {
-        int size = a.length / 2;
-        int[] right = new int[size];
-        for (int i = 0; i < size; i++) {
-            right[i] = a[size+i];
-        }
-        return right;
+        return Arrays.copyOfRange(a, a.length/2, a.length);
     }
 
     public void merge(int[] a, int[] left, int[] right){
@@ -34,21 +26,26 @@ public class MergeSort implements SortingAlgorithm {
         int j = 0;  // right
         int index = 0;
 
-        while(i < left.length && j < right.length){
-            if (left[i] < right[j]){
+        while(i < left.length || j < right.length){
+            if(i >= left.length){
+                a[index++] = right[j++];
+            }
+            else if (j >= right.length){
                 a[index++] = left[i++];
             }
             else{
-                a[index++] = right[j++];
+                if (left[i] < right[j]){
+                    a[index++] = left[i++];
+                }
+                else if (left[i] > right[j]){
+                    a[index++] = right[j++];
+                }
+                else{
+                    a[index++] = left[i++];
+                }
             }
-        }
-        while(i < left.length){
-            a[index++] = left[i++];
-        }
-        while(j< right.length){
-            a[index++] = right[j++];
-        }
 
+        }
     }
 
 }
